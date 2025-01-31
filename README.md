@@ -250,10 +250,14 @@ export default class CaseConfigs extends LightningElement {
 }
 
 
-![image](https://github.com/user-attachments/assets/20c2d12a-a5cf-4643-ab93-63d447e07f4a)
+Screenshots :
 
+![image](https://github.com/user-attachments/assets/586d1deb-59eb-46bf-80e6-e9a4c40d0530)
 
- 
+![image](https://github.com/user-attachments/assets/a808be2b-6adf-457e-aca7-64bd7c2822a6)
+
+ ![image](https://github.com/user-attachments/assets/5229dfdd-d9ed-4eda-bb8e-c7ffa6034dee)
+
 
  
 
