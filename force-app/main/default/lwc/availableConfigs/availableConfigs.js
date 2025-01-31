@@ -1,17 +1,25 @@
-import { LightningElement, wire, api } from 'lwc';
-import getAvailableConfigs from '@salesforce/apex/ConfigController.getAvailableConfigs';
-import addConfigsToCase from '@salesforce/apex/ConfigController.addConfigsToCase';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { LightningElement, track, wire } from 'lwc';
+import getAvailableConfigs from '@salesforce/apex/CaseConfigController.getAvailableConfigs';
+import addConfigsToCase from '@salesforce/apex/CaseConfigController.addConfigsToCase';
 
 export default class AvailableConfigs extends LightningElement {
-    @api recordId; // Case ID
-    configs = [];
-    selectedConfigIds = [];
+    @track availableConfigs;
+    selectedConfigs = [];
+
+    columns = [
+        { label: 'Label', fieldName: 'Label__c', type: 'text' },
+        { label: 'Type', fieldName: 'Type__c', type: 'text' },
+        { label: 'Amount', fieldName: 'Amount__c', type: 'number' }
+    ];
 
     @wire(getAvailableConfigs)
     wiredConfigs({ error, data }) {
         if (data) {
-            this.configs = data.map(config => ({ ...config, selected: false }));
+            alert(data);
+            alert('data');
+            console.log(data);
+
+            this.availableConfigs = data;
         } else if (error) {
             console.error(error);
         }
@@ -19,41 +27,17 @@ export default class AvailableConfigs extends LightningElement {
 
     handleRowSelection(event) {
         const selectedRows = event.detail.selectedRows;
-        this.selectedConfigIds = selectedRows.map(row => row.Id);
+        this.selectedConfigs = selectedRows;
     }
 
-    handleAddConfigs() {
-        if (this.selectedConfigIds.length === 0) {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error',
-                    message: 'No configs selected.',
-                    variant: 'error'
-                })
-            );
-            return;
-        }
-
-        addConfigsToCase({ caseId: this.recordId, configIds: this.selectedConfigIds })
+    addSelectedConfigs() {
+        
+        addConfigsToCase({ selectedConfigs: this.selectedConfigs, caseId: this.recordId })
             .then(() => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Configs added successfully.',
-                        variant: 'success'
-                    })
-                );
-                this.selectedConfigIds = [];
+                
             })
             .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error',
-                        message: error.body.message,
-                        variant: 'error'
-                    })
-                );
                 console.error(error);
             });
+        }
     }
-}
