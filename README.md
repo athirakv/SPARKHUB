@@ -64,6 +64,7 @@ Apex Classes
 
 ConfigController : Handles SOQL queries and DML operations for Config__c and Case_Config__c objects.
 
+
 public with sharing class CaseConfigController {
     @AuraEnabled(cacheable=true)
     public static List<Config__c> getAvailableConfigs() {
