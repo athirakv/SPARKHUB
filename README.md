@@ -57,20 +57,20 @@ Tasks
 
 7. Documentation
    - ReadMe with detailed tasks, feedback, and usage instructions.
-Code
+
+Code:
+
 Apex Classes
-ConfigController
-Handles SOQL queries and DML operations for Config__c and Case_Config__c objects.
+
+ConfigController : Handles SOQL queries and DML operations for Config__c and Case_Config__c objects.
 
 public with sharing class CaseConfigController {
     @AuraEnabled(cacheable=true)
     public static List<Config__c> getAvailableConfigs() {
         system.debug('inside');
-        return [SELECT Id, Label__c, Type__c, Amount__c FROM Config__c];
-        
+        return [SELECT Id, Label__c, Type__c, Amount__c FROM Config__c];  
     }
-
-    @AuraEnabled
+   @AuraEnabled
     public static void addConfigsToCase(List<Config__c> selectedConfigs, Id caseId) {
         List<Case_Config__c> caseConfigsToInsert = new List<Case_Config__c>();
 
